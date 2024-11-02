@@ -3,6 +3,7 @@ import { persist } from 'zustand/middleware';
 import { useShallow } from 'zustand/react/shallow';
 
 import type { DLLMId } from '~/common/stores/llms/llms.types';
+import { ASREngineKey, ASREngineList } from '~/modules/asr/asr.client';
 
 
 export type ChatAutoSpeakType = 'off' | 'firstLine' | 'all';
@@ -50,6 +51,9 @@ interface AppChatStore {
 
   micTimeoutMs: number;
   setMicTimeoutMs: (micTimeoutMs: number) => void;
+
+  ASREngine: ASREngineKey;
+  setASREngine: (ASREngine: ASREngineKey) => void;
 
   showPersonaIcons: boolean;
   setShowPersonaIcons: (showPersonaIcons: boolean) => void;
@@ -113,6 +117,9 @@ const useAppChatStore = create<AppChatStore>()(persist(
 
     micTimeoutMs: 2000,
     setMicTimeoutMs: (micTimeoutMs: number) => _set({ micTimeoutMs }),
+
+    ASREngine: ASREngineList[0].key,
+    setASREngine: (ASREngine: ASREngineKey) => _set({ ASREngine }),
 
     showPersonaIcons: true,
     setShowPersonaIcons: (showPersonaIcons: boolean) => _set({ showPersonaIcons }),
@@ -197,6 +204,9 @@ export const useChatMicTimeoutMsValue = (): number =>
 
 export const useChatMicTimeoutMs = (): [number, (micTimeoutMs: number) => void] =>
   useAppChatStore(useShallow(state => [state.micTimeoutMs, state.setMicTimeoutMs]));
+
+export const useASREngine = (): [ASREngineKey, (ASREngine: ASREngineKey) => void] =>
+  useAppChatStore(useShallow(state => [state.ASREngine, state.setASREngine]));
 
 export const useChatDrawerFilters = () => {
   const values = useAppChatStore(useShallow(state => ({

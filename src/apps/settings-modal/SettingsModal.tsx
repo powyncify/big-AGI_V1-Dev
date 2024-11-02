@@ -9,7 +9,6 @@ import WarningRoundedIcon from '@mui/icons-material/WarningRounded';
 
 import { BrowseSettings } from '~/modules/browse/BrowseSettings';
 import { DallESettings } from '~/modules/t2i/dalle/DallESettings';
-import { ElevenlabsSettings } from '~/modules/elevenlabs/ElevenlabsSettings';
 import { GoogleSearchSettings } from '~/modules/google/GoogleSearchSettings';
 import { ProdiaSettings } from '~/modules/t2i/prodia/ProdiaSettings';
 import { T2ISettings } from '~/modules/t2i/T2ISettings';
@@ -22,6 +21,9 @@ import { AppChatSettingsAI } from './AppChatSettingsAI';
 import { AppChatSettingsUI } from './settings-ui/AppChatSettingsUI';
 import { UxLabsSettings } from './UxLabsSettings';
 import { VoiceSettings } from './VoiceSettings';
+import { useTTSEngine } from '~/modules/tts/useTTSStore';
+import { TTSSetting } from '~/modules/tts/tts.setting';
+import { getName as getTTSEngineName } from '~/modules/tts/tts.client';
 
 
 // styled <AccordionGroup variant='plain'> into a Topics component
@@ -122,6 +124,8 @@ export function SettingsModal(props: {
   // external state
   const isMobile = useIsMobile();
 
+  const [TTSEngine] = useTTSEngine()
+
   // handlers
 
   const { setTab } = props;
@@ -193,8 +197,8 @@ export function SettingsModal(props: {
             <Topic icon='🎙️' title='Voice settings'>
               <VoiceSettings />
             </Topic>
-            <Topic icon='📢' title='ElevenLabs API'>
-              <ElevenlabsSettings />
+            <Topic icon='📢' title={getTTSEngineName()}>
+              <TTSSetting />
             </Topic>
           </Topics>
         </TabPanel>
